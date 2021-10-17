@@ -8,3 +8,4 @@ Assignments from the *Web Architectures* course @ UNITN.
 
 ### 📝 List
 1. Dynamic website without using Web Languages
+2. Web application for a chat system
