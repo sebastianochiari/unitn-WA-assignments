@@ -1,0 +1,13 @@
+
+<div class="row">
+    <div *ngFor="let member of members" class="col-md-4 p-2">
+        <div class="card text-center parliament-card shadow-sm">
+            <img src="{{ member.photoURL }}" class="card-img-top">
+            <div class="card-body pt-4 pb-3">
+                <a class="card-link" href="#">
+                  <h6>{{ member.name }}</h6>
+                </a>
+            </div>
+          </div>
+    </div>
+</div>
