@@ -12,4 +12,6 @@
 .card-link {
     color: #500778 !important;
     text-decoration: none;
+} .card-link:hover {
+    text-decoration: underline;
 }

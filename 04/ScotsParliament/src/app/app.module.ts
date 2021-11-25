@@ -8,6 +8,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { ButtonComponent } from './components/button/button.component';
 import { ParliamentComponent } from './components/parliament/parliament.component';
 import { MemberComponent } from './components/member/member.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { MemberComponent } from './components/member/member.component';
     HeaderComponent,
     ButtonComponent,
     ParliamentComponent,
-    MemberComponent
+    MemberComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

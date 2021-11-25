@@ -1,22 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { MemberService } from 'src/app/services/member.service';
-
-import { Member } from 'src/app/Member';
 
 @Component({
   selector: 'app-parliament',
   templateUrl: './parliament.component.html',
-  styleUrls: ['./parliament.component.css']
+  styleUrls: ['./parliament.component.css'],
 })
 
 export class ParliamentComponent implements OnInit {
 
   members: ParliamentMember[] = [];
 
-  constructor(private memberService: MemberService) {
-  }
+  constructor(private memberService: MemberService) { }
 
   ngOnInit(): void {
     this.getMembers();

@@ -4,7 +4,7 @@
         <div class="card text-center parliament-card shadow-sm">
             <img src="{{ member.photoURL }}" class="card-img-top">
             <div class="card-body pt-4 pb-3">
-                <a class="card-link" href="#">
+                <a class="card-link" [routerLink]="['../member']" [queryParams]="{id: member.id}">
                   <h6>{{ member.name }}</h6>
                 </a>
             </div>
