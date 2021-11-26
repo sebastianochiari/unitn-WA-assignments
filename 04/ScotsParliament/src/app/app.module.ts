@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { ButtonComponent } from './components/button/button.component';
 import { ParliamentComponent } from './components/parliament/parliament.component';
 import { MemberComponent } from './components/member/member.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -14,7 +13,6 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
   declarations: [
     AppComponent,
     HeaderComponent,
-    ButtonComponent,
     ParliamentComponent,
     MemberComponent,
     PageNotFoundComponent

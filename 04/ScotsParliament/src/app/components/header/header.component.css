@@ -4,3 +4,8 @@ header {
     align-items: center;
     margin-bottom: 20px;
 }
+
+.scots-btn {
+    color: white !important;
+    background-color: #500778 !important;
+}
