@@ -1,29 +1,33 @@
 
-<div class="card mb-3 no-border">
-    <div class="row g-0">
-        <div class="col-md-4">
-            <img src="{{ member.PhotoURL }}" class="img-fluid img-card" alt="">
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h4 class="card-title">{{ member.ParliamentaryName }}</h4>
-                <ng-container *ngIf="member.BirthDateIsProtected === true">
-                    <p class="card-text"><small class="text-muted">Birthdate not available</small></p>
-                </ng-container>
-                <ng-container *ngIf="member.BirthDate">
-                    <p class="card-text"><small class="text-muted">born on {{ member.BirthDate }}</small></p>
-                </ng-container>
-                <p class="card-text">representing the <b> {{ party }}</b></p>
+<ng-container *ngIf="member">
+    <div class="card mb-3 no-border">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ member.PhotoURL | photoFormatter:member.GenderTypeID }}" class="img-fluid img-card" alt="">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title">{{ member.ParliamentaryName | nameFormatter }}</h3>
+                    <ng-container *ngIf="member.BirthDateIsProtected">
+                        <p class="card-text"><small class="text-muted">Birthdate not available</small></p>
+                    </ng-container>
+                    <ng-container *ngIf="member.BirthDate">
+                        <p class="card-text text-muted">born on {{ member.BirthDate | date:'mediumDate' }}</p>
+                    </ng-container>
+                    <ng-container *ngIf="party">
+                        <p class="card-text">representing the <b> {{ party.PreferredName }}</b></p>
+                    </ng-container>
+                </div>
             </div>
         </div>
+        <hr>
+        <div class="mt-3" *ngIf="websites.length != 0">
+            <h5>Websites:</h5>
+            <ul *ngFor="let website of websites">
+                <li>
+                    <a class="scots-link" href="{{ website.WebURL }}" target="_blank">{{ website.WebURL }}</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <hr>
-    <div class="mt-3">
-        <h6>Websites:</h6>
-        <ul *ngFor="let website of websites">
-            <li>
-                <a class="scots-link" href="{{ website }}" target="_blank">{{ website }}</a>
-            </li>
-        </ul>
-    </div>
-</div>
+</ng-container>
