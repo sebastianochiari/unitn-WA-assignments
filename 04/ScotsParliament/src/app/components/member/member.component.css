@@ -1,0 +1,16 @@
+.no-border {
+    border: 0;
+}
+
+.img-card {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.scots-link {
+    color: #500778 !important;
+    text-decoration: none;
+} .scots-link:hover {
+    text-decoration: underline;
+}
