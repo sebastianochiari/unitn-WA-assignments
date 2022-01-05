@@ -1,13 +1,7 @@
 package it.unitn.disi.webarch.sebac.trivago.ejb.beans;
 
-import it.unitn.disi.webarch.sebac.trivago.ejb.dao.ApartmentDAO;
-import it.unitn.disi.webarch.sebac.trivago.ejb.dao.ApartmentReservationDAO;
-import it.unitn.disi.webarch.sebac.trivago.ejb.dao.HotelDAO;
-import it.unitn.disi.webarch.sebac.trivago.ejb.dao.HotelReservationDAO;
-import it.unitn.disi.webarch.sebac.trivago.ejb.entities.ApartmentEntity;
-import it.unitn.disi.webarch.sebac.trivago.ejb.entities.ApartmentReservationEntity;
-import it.unitn.disi.webarch.sebac.trivago.ejb.entities.HotelEntity;
-import it.unitn.disi.webarch.sebac.trivago.ejb.entities.HotelReservationEntity;
+import it.unitn.disi.webarch.sebac.trivago.ejb.dao.*;
+import it.unitn.disi.webarch.sebac.trivago.ejb.entities.*;
 
 import javax.annotation.PreDestroy;
 import javax.annotation.PostConstruct;
@@ -33,6 +27,8 @@ public class DBManagerBean {
     private HotelDAO hotelDAO;
     @EJB
     private HotelReservationDAO hotelReservationDAO;
+    @EJB
+    private HotelAvailabilityDAO hotelAvailabilityDAO;
 
     // @PostConstruct
     @Transactional
@@ -93,6 +89,9 @@ public class DBManagerBean {
                 int reserved_places = (int) Math.ceil((double) (places * occupancy_percentage / 100));
                 HotelReservationEntity hre = new HotelReservationEntity(hotel, "Mock", "Guest", date, date, reserved_places, 0);
                 hotelReservationDAO.save(hre);
+                // update availability
+                HotelAvailabilityEntity hae = new HotelAvailabilityEntity(date, hotel.getId(), places - reserved_places);
+                hotelAvailabilityDAO.save(hae);
             }
         }
 
@@ -102,5 +101,6 @@ public class DBManagerBean {
     void erase() {
         apartmentReservationDAO.deleteAll();
         hotelReservationDAO.deleteAll();
+        hotelAvailabilityDAO.deleteAll();
     }
 }

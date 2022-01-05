@@ -25,7 +25,7 @@
         <input type="number" class="form-control" id="guests" value="2" name="guests" required>
       </div>
       <div class="col-1">
-        <button type="submit" class="btn btn-primary">Cerca</button>
+        <button type="submit" class="btn btn-outline-primary">Search</button>
       </div>
     </form>
   </div>

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light py-3 trivago-navbar">
   <div class="container container-fluid">
-    <a class="navbar-brand" href="">
+    <a class="navbar-brand" href="/IndexServlet">
       <i class="fas fa-bed"></i>
       Accomodations
     </a>

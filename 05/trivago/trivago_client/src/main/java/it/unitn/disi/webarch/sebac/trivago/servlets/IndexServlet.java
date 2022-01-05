@@ -1,6 +1,7 @@
 package it.unitn.disi.webarch.sebac.trivago.servlets;
 
 import it.unitn.disi.webarch.sebac.trivago.BusinessDelegate;
+import it.unitn.disi.webarch.sebac.trivago.ejb.dto.AccommodationDTO;
 import it.unitn.disi.webarch.sebac.trivago.ejb.dto.ReservationDTO;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.ApartmentEntity;
 
@@ -15,8 +16,13 @@ import java.util.List;
 public class IndexServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void init() throws ServletException {
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        getServletContext().setAttribute("searchPerformed", false);
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
     @Override
@@ -27,20 +33,18 @@ public class IndexServlet extends HttpServlet {
         String guests = request.getParameter("guests");
 
         // call business delegate passing parameters
-        ArrayList<ApartmentEntity> accommodations = (ArrayList<ApartmentEntity>)
+        ArrayList<AccommodationDTO> accommodations = (ArrayList<AccommodationDTO>)
                 BusinessDelegate.getInstance().retrieveAccommodations(accommodationType, startDate, endDate, guests);
 
-        if(accommodations.isEmpty()) {
-            System.out.println("Non ci sono appartamenti");
-        }
-
-        for(ApartmentEntity accommodation : accommodations) {
-            System.out.println(accommodation.getApartmentName());
-        }
-
         // set servlet context variables
+        getServletContext().setAttribute("searchPerformed", true);
+        getServletContext().setAttribute("accommodations", accommodations);
+
+        getServletContext().setAttribute("guests", guests);
+        getServletContext().setAttribute("startDate", startDate);
+        getServletContext().setAttribute("endDate", endDate);
 
         // redirect to index
-
+        response.sendRedirect("/index.jsp");
     }
 }
