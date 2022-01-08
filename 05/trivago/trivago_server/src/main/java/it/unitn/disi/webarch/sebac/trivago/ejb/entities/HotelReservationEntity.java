@@ -9,7 +9,8 @@ import java.util.Objects;
 public class HotelReservationEntity {
     @Id
     @Column(name = "RESERVATION_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hotel_generator")
+    @SequenceGenerator(name = "hotel_generator", sequenceName = "HOTEL_SEQ", allocationSize = 1)
     private Integer reservationId;
     @ManyToOne
     @JoinColumn(name = "HOTEL_ID", referencedColumnName = "ID")

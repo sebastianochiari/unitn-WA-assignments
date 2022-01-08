@@ -6,6 +6,7 @@ import it.unitn.disi.webarch.sebac.trivago.ejb.util.AccommodationType;
 
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import java.sql.Date;
 
 @Singleton
 @Startup
@@ -26,14 +27,27 @@ public class DTOAssembler {
     public AccommodationDTO createAccommodationDTO(Object accommodation, int places) {
         AccommodationDTO accommodationDTO = new AccommodationDTO();
         if(accommodation instanceof ApartmentEntity) {
-            accommodationDTO = createFromApartment((ApartmentEntity) accommodation);
+            accommodationDTO = createAccommodationFromApartment((ApartmentEntity) accommodation);
         } else if (accommodation instanceof HotelEntity) {
-            accommodationDTO = createFromHotel((HotelEntity) accommodation, places);
+            accommodationDTO = createAccommodationFromHotel((HotelEntity) accommodation, places);
         }
         return accommodationDTO;
     }
 
-    public AccommodationDTO createFromHotel(HotelEntity accommodation, int places) {
+    public BookingDTO createBookingDTO(AccommodationType accommodationType, int accommodationID, String firstname, String lastname, Date startDate, Date endDate, int guests, boolean extra) {
+        return new BookingDTO(
+                accommodationType,
+                accommodationID,
+                firstname,
+                lastname,
+                startDate,
+                endDate,
+                guests,
+                extra
+        );
+    }
+
+    public AccommodationDTO createAccommodationFromHotel(HotelEntity accommodation, int places) {
         return new AccommodationDTO(
                 AccommodationType.HOTEL,
                 accommodation.getId(),
@@ -45,7 +59,7 @@ public class DTOAssembler {
         );
     }
 
-    public AccommodationDTO createFromApartment(ApartmentEntity accommodation) {
+    public AccommodationDTO createAccommodationFromApartment(ApartmentEntity accommodation) {
         return new AccommodationDTO(
                 AccommodationType.APARTMENT,
                 accommodation.getId(),

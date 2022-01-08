@@ -27,10 +27,10 @@ public class CheckoutBean implements Checkout {
         AccommodationDTO accommodation = new AccommodationDTO();
         if(accommodationType == AccommodationType.APARTMENT) {
             ApartmentEntity apartment = apartmentDAO.getByID(accommodationID);
-            accommodation = DTOAssembler.getInstance().createFromApartment(apartment);
+            accommodation = DTOAssembler.getInstance().createAccommodationFromApartment(apartment);
         } else if(accommodationType == AccommodationType.HOTEL) {
             HotelEntity hotel = hotelDAO.getByID(accommodationID);
-            accommodation = DTOAssembler.getInstance().createFromHotel(hotel, 0);
+            accommodation = DTOAssembler.getInstance().createAccommodationFromHotel(hotel, 0);
         }
         return accommodation;
     }

@@ -1,0 +1,22 @@
+2022-01-06 16:38:26 jdbc[170]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-204]
+	at org.h2.message.DbException.get(DbException.java:227)
+	at org.h2.message.DbException.get(DbException.java:203)
+	at org.h2.message.DbException.get(DbException.java:192)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:185)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:127)
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:287)
+	at org.h2.server.web.WebServer.getConnection(WebServer.java:785)
+	at org.h2.server.web.WebApp.login(WebApp.java:1029)
+	at org.h2.server.web.WebApp.process(WebApp.java:226)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
+	at org.h2.server.web.WebThread.process(WebThread.java:139)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-204]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:697)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:496)
+	... 13 more
+2022-01-06 16:57:41 jdbc[196]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE ALL[*] FROM APARTMENT_RESERVATION"; expected "identifier"; SQL statement:
+DELETE ALL FROM APARTMENT_RESERVATION [42001-204]

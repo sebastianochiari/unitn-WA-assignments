@@ -1,7 +1,10 @@
 package it.unitn.disi.webarch.sebac.trivago;
 
 import it.unitn.disi.webarch.sebac.trivago.ejb.dto.AccommodationDTO;
+import it.unitn.disi.webarch.sebac.trivago.ejb.dto.BookingDTO;
+import it.unitn.disi.webarch.sebac.trivago.ejb.dto.DTOAssembler;
 import it.unitn.disi.webarch.sebac.trivago.ejb.dto.ReservationDTO;
+import it.unitn.disi.webarch.sebac.trivago.ejb.interfaces.BookingWrapper;
 import it.unitn.disi.webarch.sebac.trivago.ejb.interfaces.Checkout;
 import it.unitn.disi.webarch.sebac.trivago.ejb.interfaces.Reservation;
 import it.unitn.disi.webarch.sebac.trivago.ejb.interfaces.Search;
@@ -77,5 +80,38 @@ public class BusinessDelegate {
         Checkout c = (Checkout) ServiceLocator.getInstance().getHandle(handleKey);
 
         return c.getCheckout(type, id);
+    }
+
+    public boolean bookAccommodation(String accommodationType, String accommodationID, String firstname, String lastname, String startDate, String endDate, String guests, String extra) {
+        // formatting
+        AccommodationType type = null;
+        if(accommodationType.equals("APARTMENT")) {
+            type = AccommodationType.APARTMENT;
+        } else if(accommodationType.equals("HOTEL")) {
+            type = AccommodationType.HOTEL;
+        }
+
+        boolean extraHalfBoard = false;
+        if(extra.equals("yes")) {
+            extraHalfBoard = true;
+        }
+
+        // generate bookingDTO
+        BookingDTO bookingDTO = DTOAssembler.getInstance().createBookingDTO(
+                type,
+                Integer.parseInt(accommodationID),
+                firstname,
+                lastname,
+                Date.valueOf(startDate),
+                Date.valueOf(endDate),
+                Integer.parseInt(guests),
+                extraHalfBoard
+        );
+
+        // setup handle
+        String handleKey = createHandleKey("BookingServiceWrapper", "BookingWrapper");
+        BookingWrapper c = (BookingWrapper) ServiceLocator.getInstance().getHandle(handleKey);
+
+        return (boolean) c.bookingServiceWrapper(bookingDTO);
     }
 }

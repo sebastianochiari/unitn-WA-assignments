@@ -3,14 +3,12 @@ package it.unitn.disi.webarch.sebac.trivago.ejb.dao;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.HotelAvailabilityEntity;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.HotelAvailabilityEntityPK;
 
-import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Date;
 
 @Singleton
-@LocalBean
 public class HotelAvailabilityDAO {
 
     @PersistenceContext
@@ -21,6 +19,7 @@ public class HotelAvailabilityDAO {
         return entityManager.find(HotelAvailabilityEntity.class, hotelAvailabilityID);
     }
 
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRED)
     public void save(HotelAvailabilityEntity hotelAvailability) {
         entityManager.persist(hotelAvailability);
     }
@@ -30,6 +29,7 @@ public class HotelAvailabilityDAO {
                 .setParameter("places", places).setParameter("id", hotelAvailabilityID).executeUpdate();
     }
 
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRED)
     public void deleteAll() {
         entityManager.createQuery("Delete from HotelAvailabilityEntity WHERE hotelId is not null").executeUpdate();
     }

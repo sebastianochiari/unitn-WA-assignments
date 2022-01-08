@@ -3,13 +3,11 @@ package it.unitn.disi.webarch.sebac.trivago.ejb.beans;
 import it.unitn.disi.webarch.sebac.trivago.ejb.dao.*;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.*;
 
-import javax.annotation.PreDestroy;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.*;
 import java.sql.Date;
 
@@ -97,6 +95,7 @@ public class DBManagerBean {
 
     }
 
+    // @PostConstruct
     @Transactional
     void erase() {
         apartmentReservationDAO.deleteAll();

@@ -2,19 +2,18 @@ package it.unitn.disi.webarch.sebac.trivago.ejb.dao;
 
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.ApartmentEntity;
 
-import javax.ejb.LocalBean;
-import javax.ejb.Singleton;
+import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Singleton
-@LocalBean
 public class ApartmentDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRED)
     public void save(ApartmentEntity apartment) {
         entityManager.persist(apartment);
     }

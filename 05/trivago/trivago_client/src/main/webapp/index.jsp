@@ -33,15 +33,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <c:if test="${searchPerformed}">
-                    <c:if test="${accommodations.isEmpty()}">
+                <c:if test="${sessionScope.searchPerformed}">
+                    <c:if test="${sessionScope.accommodations.isEmpty()}">
                         <h5>We are sorry.</h5>
                         <p>It seems there are no available accommodations with your search parameters.</p>
                     </c:if>
-                    <c:if test="${!(accommodations.isEmpty())}">
+                    <c:if test="${!(sessionScope.accommodations.isEmpty())}">
                         <h5>Your results</h5>
                         <div class="row row-cols-1 row-cols-md-2 g-4">
-                            <c:forEach items="${accommodations}" var="accommodation">
+                            <c:forEach items="${sessionScope.accommodations}" var="accommodation">
                                 <div class="col">
                                     <div class="card my-2">
                                         <div class="card-header">
@@ -85,9 +85,19 @@
                                             </div>
                                             <div class="col-md-4 text-end">
                                                 <h4 class="card-title" style="color: #198754">
-                                                    <!-- TODO: FIX CORRECT PRICE -->
+                                                    <c:if test="${accommodation.getAccommodationType() == 'HOTEL'}">
+                                                    <small style="font-size: medium;">
+                                                        starting at
+                                                    </small>
+                                                        <br>
+                                                    </c:if>
                                                     <b>
-                                                        145
+                                                        <c:if test="${accommodation.getAccommodationType() == 'APARTMENT'}">
+                                                            ${(accommodation.getPrice() * sessionScope.days) + accommodation.getExtra()}
+                                                        </c:if>
+                                                        <c:if test="${accommodation.getAccommodationType() == 'HOTEL'}">
+                                                            ${accommodation.getPrice() * sessionScope.days * sessionScope.guests}
+                                                        </c:if>
                                                     </b>
                                                     €
                                                 </h4>
@@ -115,27 +125,25 @@
     <!-- CUSTOM JS -->
     <script type="text/javascript">
 
-        function checkTransactionStatus() {
+        function updateTransactionStatus() {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", "/BookingServlet", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.responseType = "json";
-            xhttp.onreadystatechange = function () {
-                let done = 4, ok = 200;
-                if(this.readyState === done && this.status === ok) {
-                    let statusJSON = this.response;
-                    console.log(statusJSON.transactionStatus);
-                    console.log(typeof statusJSON.transactionStatus);
-                    toggleMessage(statusJSON.transactionStatus);
-                }
-            }
             xhttp.send();
         }
 
+        function checkTransactionStatus() {
+            let sessionStatus = '<%= session.getAttribute("transactionStatus")%>';
+            toggleMessage(sessionStatus);
+            updateTransactionStatus();
+
+        }
+
         function toggleMessage(status) {
-            if(status !== "nothing") {
+            if(status !== null) {
                 let modal = null;
-                if(status === "success") {
+                if(status === "succeeded") {
                     modal = document.getElementById("successModal");
                 } else if(status === "failed") {
                     modal = document.getElementById("errorModal");

@@ -12,6 +12,7 @@
         <properties>
             <property name="hibernate.connection.url" value="jdbc:h2:tcp://localhost/~/trivagoDB"/>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+            <property name="hibernate.id.new_generator_mapping" value="false"/>
         </properties>
     </persistence-unit>
 </persistence>

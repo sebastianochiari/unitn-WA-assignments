@@ -18,16 +18,16 @@
     <main>
         <div class="container mt-5">
             <h3>My Reservations</h3>
-            <c:if test="${!(thereAreReservations)}">
+            <c:if test="${!(sessionScope.thereAreReservations)}">
             <p class="mt-4">
                 Oh, that's unfortunate.
                 <br>
                 We found <b>no reservation</b> under the name "${name}".
             </p>
             </c:if>
-            <c:if test="${thereAreReservations}">
+            <c:if test="${sessionScope.thereAreReservations}">
             <div class="reservations">
-                <c:forEach items="${reservations}" var="reservation">
+                <c:forEach items="${sessionScope.reservations}" var="reservation">
                     <div class="reservation-item mb-2">
                         <h2 class="reservation-header">
                             Reservation - ${reservation.getAccommodationName()}

@@ -5,10 +5,12 @@ import it.unitn.disi.webarch.sebac.trivago.ejb.dao.ApartmentReservationDAO;
 import it.unitn.disi.webarch.sebac.trivago.ejb.dao.HotelAvailabilityDAO;
 import it.unitn.disi.webarch.sebac.trivago.ejb.dao.HotelDAO;
 import it.unitn.disi.webarch.sebac.trivago.ejb.dto.AccommodationDTO;
+import it.unitn.disi.webarch.sebac.trivago.ejb.dto.DTOAssembler;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.ApartmentEntity;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.ApartmentReservationEntity;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.HotelAvailabilityEntity;
 import it.unitn.disi.webarch.sebac.trivago.ejb.entities.HotelEntity;
+import it.unitn.disi.webarch.sebac.trivago.ejb.interfaces.HotelAvailability;
 import it.unitn.disi.webarch.sebac.trivago.ejb.interfaces.Search;
 import it.unitn.disi.webarch.sebac.trivago.ejb.util.AccommodationType;
 
@@ -32,8 +34,8 @@ public class SearchService implements Search {
     private HotelDAO hotelDAO;
     @EJB
     private HotelAvailabilityDAO hotelAvailabilityDAO;
-
-
+    @EJB
+    private HotelAvailability hotelAvailabilityBean;
 
     @Override
     public List<AccommodationDTO> searchAll(int places, Date startDate, Date endDate) {
@@ -57,15 +59,7 @@ public class SearchService implements Search {
             for(ApartmentEntity apartment : apartments) {
                 List<ApartmentReservationEntity> reservations = apartmentReservationDAO.getApartmentReservationByIDAndDates(apartment, startDate, endDate);
                 if(reservations.isEmpty()) {
-                    AccommodationDTO accommodation = new AccommodationDTO(
-                            AccommodationType.APARTMENT,
-                            apartment.getId(),
-                            apartment.getApartmentName(),
-                            apartment.getPrice(),
-                            apartment.getFinalCleaning(),
-                            0,
-                            0
-                    );
+                    AccommodationDTO accommodation = DTOAssembler.getInstance().createAccommodationFromApartment(apartment);
                     availableApartments.add(accommodation);
                 }
             }
@@ -78,30 +72,10 @@ public class SearchService implements Search {
         List<AccommodationDTO> availableHotels = new ArrayList<>();
 
         List<HotelEntity> hotels = hotelDAO.getAll();
-        System.out.println("HOTELS SIZE: " + hotels.size());
         for(HotelEntity hotel : hotels) {
-            boolean isHotelAvailable = true;
-            System.out.println("Inquiring hotel " + hotel.getHotelName());
-            for(LocalDate date = startDate.toLocalDate(); date.isBefore(endDate.toLocalDate()); date = date.plusDays(1)) {
-                System.out.println("\tScanning for " + date.toString());
-                HotelAvailabilityEntity tmp = hotelAvailabilityDAO.getHotelAvailabilityByID(hotel.getId(), Date.valueOf(date));
-                System.out.println("\t\t" + tmp);
-                if(tmp != null) {
-                    if(tmp.getPlacesAvailable() < places) {
-                        isHotelAvailable = false;
-                    }
-                }
-            }
+            boolean isHotelAvailable = hotelAvailabilityBean.isHotelAvailable(hotel.getId(), startDate, endDate, places);
             if(isHotelAvailable) {
-                AccommodationDTO accommodation = new AccommodationDTO(
-                        AccommodationType.HOTEL,
-                        hotel.getId(),
-                        hotel.getHotelName(),
-                        hotel.getPrice(),
-                        hotel.getExtraHalfboard(),
-                        hotel.getStars(),
-                        places
-                );
+                AccommodationDTO accommodation = DTOAssembler.getInstance().createAccommodationFromHotel(hotel, places);
                 availableHotels.add(accommodation);
             }
         }

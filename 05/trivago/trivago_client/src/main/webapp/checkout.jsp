@@ -30,33 +30,33 @@
                         <div class="card g-3">
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    ${accommodation.getAccommodationName()}
+                                    ${sessionScope.accommodation.getAccommodationName()}
                                 </h4>
                                 <p class="card-text" >
-                                    <c:if test="${accommodation.getAccommodationType() == 'HOTEL'}">
+                                    <c:if test="${sessionScope.accommodation.getAccommodationType() == 'HOTEL'}">
                                         <small>
-                                            <c:forEach var="i" begin="1" end="${accommodation.getStars()}" step="1" varStatus="status">
+                                            <c:forEach var="i" begin="1" end="${sessionScope.accommodation.getStars()}" step="1" varStatus="status">
                                                 ⭐
                                             </c:forEach>
                                         </small>
                                     </c:if>
                                     <small>
-                                        <c:if test="${accommodation.getAccommodationType() == 'HOTEL'}">
+                                        <c:if test="${sessionScope.accommodation.getAccommodationType() == 'HOTEL'}">
                                             Hotel
                                         </c:if>
-                                        <c:if test="${accommodation.getAccommodationType() == 'APARTMENT'}">
+                                        <c:if test="${sessionScope.accommodation.getAccommodationType() == 'APARTMENT'}">
                                             Apartment
                                         </c:if>
                                     </small>
                                 </p>
                                 <p class="card-text">
                                     <i class="far fa-calendar-alt me-2"></i>
-                                    ${startDate} - ${endDate}
+                                    ${sessionScope.startDate} - ${sessionScope.endDate}
                                 </p>
-                                <c:if test="${accommodation.getAccommodationType() == 'HOTEL'}">
+                                <c:if test="${sessionScope.accommodation.getAccommodationType() == 'HOTEL'}">
                                     <p class="card-text">
                                         <i class="fas fa-user-friends me-2"></i>
-                                        ${guests} guests
+                                        ${sessionScope.guests} guests
                                     </p>
                                     <div class="form-check my-2">
                                         <input class="form-check-input" type="checkbox" value="yes" id="halfBoard" name="halfBoard" onclick="changePrice()">
@@ -67,10 +67,15 @@
                                 </c:if>
                                 <h2 class="card-title text-end" style="color: #198754; font-weight: bold">
                                     <div id="price">
-                                        145€
+                                        <c:if test="${sessionScope.accommodation.getAccommodationType() == 'APARTMENT'}">
+                                            ${(sessionScope.accommodation.getPrice() * sessionScope.days) + sessionScope.accommodation.getExtra()}€
+                                        </c:if>
+                                        <c:if test="${sessionScope.accommodation.getAccommodationType() == 'HOTEL'}">
+                                            ${sessionScope.accommodation.getPrice() * sessionScope.days * sessionScope.guests}€
+                                        </c:if>
                                     </div>
                                     <div id="price-with-extra" style="display: none">
-                                        180€
+                                        ${(sessionScope.accommodation.getPrice() + sessionScope.accommodation.getExtra()) * sessionScope.days * sessionScope.guests}€
                                     </div>
                                 </h2>
                             </div>
@@ -101,11 +106,11 @@
                             </div>
                         </div>
                         <hr class="my-4">
-                        <input type="hidden" id="accommodationType" name="accommodationType" value="${accommodation.getAccommodationType()}">
-                        <input type="hidden" id="accommodationID" name="accommodationID" value="${accommodation.getAccommodationID()}">
-                        <input type="hidden" id="startDate" name="startDate" value="${startDate}">
-                        <input type="hidden" id="endDate" name="endDate" value="${endDate}">
-                        <input type="hidden" id="guests" name="guests" value="${guests}">
+                        <input type="hidden" id="accommodationType" name="accommodationType" value="${sessionScope.accommodation.getAccommodationType()}">
+                        <input type="hidden" id="accommodationID" name="accommodationID" value="${sessionScope.accommodation.getAccommodationID()}">
+                        <input type="hidden" id="startDate" name="startDate" value="${sessionScope.startDate}">
+                        <input type="hidden" id="endDate" name="endDate" value="${sessionScope.endDate}">
+                        <input type="hidden" id="guests" name="guests" value="${sessionScope.guests}">
 
                         <button class="w-100 btn btn-primary btn-lg" type="submit">Book your accommodation</button>
                     </div>

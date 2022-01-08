@@ -26,8 +26,9 @@ public class CheckoutServlet extends HttpServlet {
         // call business delegate passing parameters
         AccommodationDTO accommodation = BusinessDelegate.getInstance().retrieveCheckout(accommodationType, accommodationID);
 
-        // set ServletContext variables
-        getServletContext().setAttribute("accommodation", accommodation);
+        // set session attribute
+        HttpSession session = request.getSession();
+        session.setAttribute("accommodation", accommodation);
 
         // redirect with URL rewriting
         response.sendRedirect("/checkout");

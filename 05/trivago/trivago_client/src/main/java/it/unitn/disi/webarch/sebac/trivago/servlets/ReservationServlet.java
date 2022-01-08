@@ -14,6 +14,7 @@ import java.util.ArrayList;
 @WebServlet(name = "ReservationServlet",
         value = {"/ReservationServlet", "/myreservations"})
 public class ReservationServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/myreservations.jsp").forward(request, response);
@@ -32,11 +33,12 @@ public class ReservationServlet extends HttpServlet {
             thereAreReservations = false;
         }
 
-        getServletContext().setAttribute("thereAreReservations", thereAreReservations);
-        getServletContext().setAttribute("reservations", reservations);
-        getServletContext().setAttribute("name", firstname + " " + lastname);
+        HttpSession session = request.getSession();
+        session.setAttribute("thereAreReservations", thereAreReservations);
+        session.setAttribute("reservations", reservations);
+        session.setAttribute("name", firstname + " " + lastname);
 
         // redirect with URL rewriting
-        response.sendRedirect("/myreservations?firstname=" + firstname + "&lastname=" + lastname);
+        response.sendRedirect("/myreservations");
     }
 }
