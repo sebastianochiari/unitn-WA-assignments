@@ -28,7 +28,7 @@ public class DBManagerBean {
     @EJB
     private HotelAvailabilityDAO hotelAvailabilityDAO;
 
-    // @PostConstruct
+    @PostConstruct
     @Transactional
     void populate() {
 

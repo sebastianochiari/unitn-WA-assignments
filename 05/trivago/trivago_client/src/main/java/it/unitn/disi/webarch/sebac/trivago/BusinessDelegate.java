@@ -85,15 +85,14 @@ public class BusinessDelegate {
     public boolean bookAccommodation(String accommodationType, String accommodationID, String firstname, String lastname, String startDate, String endDate, String guests, String extra) {
         // formatting
         AccommodationType type = null;
+        boolean extraHalfBoard = false;
         if(accommodationType.equals("APARTMENT")) {
             type = AccommodationType.APARTMENT;
         } else if(accommodationType.equals("HOTEL")) {
             type = AccommodationType.HOTEL;
-        }
-
-        boolean extraHalfBoard = false;
-        if(extra.equals("yes")) {
-            extraHalfBoard = true;
+            if(extra.equals("yes")) {
+                extraHalfBoard = true;
+            }
         }
 
         // generate bookingDTO
